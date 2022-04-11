@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load get_attribute %}
+
+{% block load_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"
+  integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{% static 'javascript/table.js' %}"></script>
+{% endblock %}
+
+{% block load_css %}
+<link rel="stylesheet" href="{% static 'css/customer/customer.css' %}">
+<link rel="stylesheet" href="{% static 'css/customer/tableblue.css' %}">
+<link rel="stylesheet" href="{% static 'css/customer/tablesorter.css' %}">
+<link rel="stylesheet" href="{% static 'css/customer/cusform.css' %}">
+{% endblock %}
+
+{% block title %}Main page{% endblock %}
+
+{% block table_customers %}
+<div class="content">
+  <div class="customer-manager">
+    <form method="post">
+      <h2>Customer Manager</h2>
+      {% for field in cus_form %}
+      <div class="input-box">
+        {{ field }}
+        <span>{{ field.label }}</span>
+      </div>
+      {% endfor %}
+      {% csrf_token %}
+      <div class="input-box" id="submit-form">
+        <input type="submit" value="Add new customer">
+      </div>
+    </form>
+  </div>
+  <div class="customer-table">
+    <table class="tablesorter hover-highlight focus-highlight">
+      <h2>Table of Customers</h2>
+      <thead>
+        <tr>
+          {% for col_name in cus_cols %}
+          <th>{{ col_name }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for cus in customers %}
+        <tr>
+          {% for col_name in cus_cols %}
+          <td>{{ cus|get_attr:col_name }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="clearfix"></div>
+</div>
+{% endblock %}

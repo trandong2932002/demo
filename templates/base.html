@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="{% static 'javascript/base.js' %}"></script>
+  {% block load_js %}{% endblock %}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+  {% block load_css %}{% endblock %}
+</head>
+
+<body>
+  <header>
+    <a href="/main/" class="logo">Logo</a>
+    <div class="user-login">
+      <ul>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </div>
+    <div class="menu-toggle"></div>
+    <nav>
+      <ul>
+        <li><a href="/customers/">Khách hàng</a></li>
+        <li><a href="/marketing/">Marketing</a></li>
+        <li><a href="/business/">Kinh doanh</a></li>
+        <li><a href="/products/">Sản phẩm</a></li>
+        <li><a href="#">Quản trị</a></li>
+        <li><a href="/suppliers/">Nhà cung cấp</a></li>
+        <li><a href="/accountant/">Kế toán</a></li>
+      </ul>
+    </nav>
+    <div class="clearfix"></div>
+  </header>
+  {% block table_customers %}{% endblock %}
+</body>
+
+</html>

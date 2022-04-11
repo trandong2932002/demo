@@ -1,0 +1,11 @@
+.customer-manager
+{
+  position: initial;
+  float: left;
+  margin: 20px;
+}
+.customer-table
+{
+  margin: 20px; 
+  float: right;
+}
