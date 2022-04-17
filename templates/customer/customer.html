@@ -3,59 +3,132 @@
 {% load get_attribute %}
 
 {% block load_js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"
-  integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{% static 'javascript/table.js' %}"></script>
+	<!-- Demo stuff -->
+	<link rel="stylesheet" href="https://mottie.github.io/tablesorter/docs/css/jq.css">
+	<link href="https://mottie.github.io/tablesorter/docs/css/prettify.css" rel="stylesheet">
+	<script src="https://mottie.github.io/tablesorter/docs/js/prettify.js"></script>
+
+	<!-- Tablesorter: required -->
+	<link rel="stylesheet" href="https://mottie.github.io/tablesorter/css/theme.blue.css">
+	<script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
+	<script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.widgets.js"></script>
+  <link rel="stylesheet" href="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.css">
+  <script src="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
+	<script src="https://mottie.github.io/tablesorter/beta-testing/pager-custom-controls.js"></script>
+
+  <script src="{% static 'javascript/table.js' %}"></script>
+  <script src="{% static 'javascript/customer/customer.js' %}"></script>
 {% endblock %}
 
 {% block load_css %}
 <link rel="stylesheet" href="{% static 'css/customer/customer.css' %}">
-<link rel="stylesheet" href="{% static 'css/customer/tableblue.css' %}">
 <link rel="stylesheet" href="{% static 'css/customer/tablesorter.css' %}">
 <link rel="stylesheet" href="{% static 'css/customer/cusform.css' %}">
 {% endblock %}
 
 {% block title %}Main page{% endblock %}
 
-{% block table_customers %}
+{% block content %}
 <div class="content">
-  <div class="customer-manager">
-    <form method="post">
-      <h2>Customer Manager</h2>
-      {% for field in cus_form %}
-      <div class="input-box">
-        {{ field }}
-        <span>{{ field.label }}</span>
+  
+  <h2 style="font-size: 24px !important;">Table of Customers</h2>
+    <!-- customer manager here -->
+    <div class="customer-manager">
+      <div style="margin: 20px;">
+        <button class="customer-button" type="button">Add</button>
+        <button class="customer-button" type="button">Edit</button>
+        <button class="customer-button" type="button">Delete</button>
       </div>
-      {% endfor %}
-      {% csrf_token %}
-      <div class="input-box" id="submit-form">
-        <input type="submit" value="Add new customer">
+
+      <div class="customer-add-form">
+        <div class="customer-manager-form">
+          <form method="post">
+            <h2 style="font-size: medium; margin-bottom: 18px; !important">Add Customer</h2>
+            {% for field in cus_form %}
+            <div class="input-box">
+              {{ field }}
+              <span>{{ field.label }}</span>
+            </div>
+            {% endfor %}
+            {% csrf_token %}
+            <div class="input-box" id="submit-form">
+              <input type="submit" value="Add new customer">
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
-  </div>
-  <div class="customer-table">
-    <table class="tablesorter hover-highlight focus-highlight">
-      <h2>Table of Customers</h2>
-      <thead>
-        <tr>
-          {% for col_name in cus_cols %}
-          <th>{{ col_name }}</th>
+
+      <div class="customer-edit-form">
+        <div class="customer-manager-form">
+          <form method="post">
+            <h2 style="font-size: medium; margin-bottom: 18px; !important">Edit Customer</h2>
+            {% for field in cus_form %}
+            <div class="input-box">
+              {{ field }}
+              <span>{{ field.label }}</span>
+            </div>
+            {% endfor %}
+            {% csrf_token %}
+            <div class="input-box" id="submit-form">
+              <input type="submit" value="Add new customer">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- table here -->
+    <div class="customer-table">
+      <div class="pager">
+        <span class="pagedisplay" style="margin: 20px;"></span>
+      </div>
+      <table class="tablesorter hover-highlight focus-highlight">
+        <thead>
+          <tr>
+            {% for col_name in cus_cols %}
+            <th>{{ col_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Name</th>
+            <th>Major</th>
+            <th>Sex</th>
+            <th>English</th>
+            <th>Japanese</th>
+            <th>Calculus</th>
+            <th>Geometry</th>
+          </tr>
+          <tr>
+            <td colspan="7">
+              <div class="pager"> <span class="left">
+                  # per page:
+                  <a href="#" class="current">10</a> |
+                  <a href="#">25</a> |
+                  <a href="#">50</a> |
+                  <a href="#">100</a>
+                </span>
+                <span class="right">
+                  <span class="prev">Prev</span>
+                  <span class="pagecount"></span>
+                  <span class="next">Next</span>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for cus in customers %}
+          <tr>
+            {% for col_name in cus_cols %}
+            <td>{{ cus|get_attr:col_name }}</td>
+            {% endfor %}
+          </tr>
           {% endfor %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for cus in customers %}
-        <tr>
-          {% for col_name in cus_cols %}
-          <td>{{ cus|get_attr:col_name }}</td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+        </tbody>
+      </table>
+    </div>
   <div class="clearfix"></div>
 </div>
 {% endblock %}

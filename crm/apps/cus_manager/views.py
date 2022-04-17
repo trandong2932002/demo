@@ -9,7 +9,7 @@ def customer_manager(request: HttpRequest):
     cus_cols = [a.name for a in Customer._meta.fields]
     cus_cols = [cus_cols[0], cus_cols[2], cus_cols[3], cus_cols[4],
                 cus_cols[5], cus_cols[8], cus_cols[9]]
-    customers = Customer.objects.all()[:10]
+    customers = Customer.objects.all()
 
     # add customer form
     new_cus = None

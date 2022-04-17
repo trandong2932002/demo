@@ -5,4 +5,3 @@ class CustomerAddForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = '__all__'
-        exclude = ['companyname', 'region', 'postalcode', 'fax']

@@ -1,11 +1,30 @@
-.customer-manager
-{
+.customer-manager-form {
   position: initial;
-  float: left;
   margin: 20px;
 }
-.customer-table
-{
-  margin: 20px; 
-  float: right;
+
+.customer-table {
+  margin: 20px;
+}
+
+.customer-button {
+  margin-left: 10px;
+}
+
+.customer-add-form {
+  display: none;
+}
+
+.customer-add-form.active {
+  display: block;
+  /* position: absolute; */
+}
+
+.customer-edit-form {
+  display: none;
+}
+
+.customer-edit-form.active {
+  display: block;
+  /* position: absolute; */
 }
