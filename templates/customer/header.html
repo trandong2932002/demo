@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% load get_attribute %}
+
+
+{% block load_js %}
+<!-- Demo stuff -->
+<link rel="stylesheet" href="https://mottie.github.io/tablesorter/docs/css/jq.css">
+<link href="https://mottie.github.io/tablesorter/docs/css/prettify.css" rel="stylesheet">
+<script src="https://mottie.github.io/tablesorter/docs/js/prettify.js"></script>
+
+<!-- Tablesorter: required -->
+<link rel="stylesheet" href="https://mottie.github.io/tablesorter/css/theme.blue.css">
+<script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
+<script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.widgets.js"></script>
+<link rel="stylesheet" href="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.css">
+<script src="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
+<script src="https://mottie.github.io/tablesorter/beta-testing/pager-custom-controls.js"></script>
+
+<script src="{% static 'javascript/table.js' %}"></script>
+<script src="{% static 'javascript/customer/customer.js' %}"></script>
+{% endblock %}
+
+
+<!-- script in here for use django variable, maybe not :)) -->
+{% block script %}
+{% endblock %}
+
+
+{% block load_css %}
+<link rel="stylesheet" href="{% static 'css/customer/customer.css' %}">
+<link rel="stylesheet" href="{% static 'css/customer/tablesorter.css' %}">
+<link rel="stylesheet" href="{% static 'css/customer/cusform.css' %}">
+{% endblock %}

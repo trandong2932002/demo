@@ -1,11 +1,10 @@
-.customer-manager .input-box
-{
+.manager .input-box {
   position: relative;
   width: 100%;
   margin-top: 10px;
 }
-.customer-manager .input-box input
-{
+
+.manager .input-box input {
   width: 100%;
   padding: 5px 0;
   font-size: 14px;
@@ -14,8 +13,8 @@
   /* border-bottom: 2px solid #333; */
   outline: none;
 }
-.customer-manager .input-box span
-{
+
+.manager .input-box span {
   position: absolute;
   left: 0;
   padding: 5px 0;
@@ -27,12 +26,13 @@
   transition: 0.3s;
   z-index: 1;
 }
-#submit-form
-{
+
+#submit-form {
   text-align: center;
 }
-.customer-manager .input-box input[type="submit"]
-{
+
+.manager .input-box input[type="submit"],
+.manager .input-box input[type="button"] {
   width: 200px;
   background-color: #069370;
   color: #fff;
@@ -43,3 +43,4 @@
   border-radius: 4px;
   margin: auto;
 }
+

@@ -13,6 +13,8 @@ initial-scale=1.0">
   <script src="{% static 'javascript/base.js' %}"></script>
   {% block load_js %}{% endblock %}
 
+  {% block script %}{% endblock %}
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -45,6 +47,8 @@ initial-scale=1.0">
     <div class="clearfix"></div>
   </header>
   {% block content %}{% endblock %}
+  {% block content1 %}{% endblock %}
+
 </body>
 
 </html>

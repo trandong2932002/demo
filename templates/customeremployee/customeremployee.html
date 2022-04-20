@@ -1,0 +1,89 @@
+{% extends "customer/header.html" %}
+{% load static %}
+{% load get_attribute %}
+
+
+{% block title %}Customer employee{% endblock %}
+
+
+{% block content %}
+<div class="content">
+
+  <!-- Customer employee -->
+  <h2 style="all: revert">Employee manager for Customer: id = {{ cus.0 }}, name = {{ cus.1 }}</h2>
+
+  <!-- table layout -->
+  <div class="table">
+    <!-- pager -->
+    <div class="pager">
+      <span class="pagedisplay"></span>
+    </div>
+
+    <!-- table -->
+    <table class="tablesorter hover-highlight focus-highlight">
+      <!-- table head -->
+      <thead>
+        <tr>
+          {% for col_name in cusemp_cols %}
+          <th>{{ col_name }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <!-- table foot -->
+      <tfoot>
+        <tr>
+          {% for col_name in cusemp_cols %}
+          <th>{{ col_name }}</th>
+          {% endfor %}
+        </tr>
+        <tr>
+          <td colspan="{{ cusemp_cols|length }}">
+            <div class="pager"> <span class="left">
+                # per page:
+                <a href="#" class="current">10</a> |
+                <a href="#">25</a> |
+                <a href="#">50</a> |
+                <a href="#">100</a>
+              </span>
+              <span class="right">
+                <span class="prev">Prev</span>
+                <span class="pagecount"></span>
+                <span class="next">Next</span>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+      <!-- table body -->
+      <tbody>
+        {% for emp in cusemps %}
+        <tr>
+          {% for emp_element in emp %}
+          {% if emp_element == 'True'%}
+          <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}" checked="true"></td>
+          {% elif emp_element == 'False' %}
+          <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}"></td>
+          {% else %}
+          <td>{{ emp_element }}</td>
+          {% endif %}
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- buttons layout -->
+    <div class="manager-button">
+      <form method="post" class="save-form" id="checkbox-checked">
+        {{ cusemp_form.as_p }}
+        {% csrf_token %}
+        <div class="input-box" id="submit-form">
+          <input type="submit" name="save" value="Save">
+        </div>
+      </form>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

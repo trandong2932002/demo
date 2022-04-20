@@ -1,0 +1,145 @@
+{% extends "customer/header.html" %}
+{% load get_attribute %}
+
+
+{% block title %}Customer{% endblock %}
+
+
+{% block content %}
+<div class="content">
+
+
+  <h2 style="all: revert;">Customer Management</h2>
+
+
+  <!-- table here -->
+  <div class="table">
+    <div class="pager">
+      <span class="pagedisplay"></span>
+    </div>
+    <table class="tablesorter hover-highlight focus-highlight">
+      <thead>
+        <tr>
+          {% for col_name in cus_cols %}
+          <th>{{ col_name }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          {% for col_name in cus_cols %}
+          <th>{{ col_name }}</th>
+          {% endfor %}
+        </tr>
+        <tr>
+          <td colspan="{{ cus_cols|length }}">
+            <div class="pager"> <span class="left">
+                # per page:
+                <a href="#" class="current">10</a> |
+                <a href="#">25</a> |
+                <a href="#">50</a> |
+                <a href="#">100</a>
+              </span>
+              <span class="right">
+                <span class="prev">Prev</span>
+                <span class="pagecount"></span>
+                <span class="next">Next</span>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+      <tbody>
+        {% for cus in customers %}
+        <tr>
+          {% for col_name in cus_cols %}
+          <td>{{ cus|get_attr:col_name|default_if_none:'' }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- customer manager here -->
+  <div class="manager">
+    <!-- button  -->
+    <div class="manager-button">
+      <div class="input-box">
+        <input type="button" class="button" value="Add">
+      </div>
+      <div class="input-box">
+        <input type="button" class="button" value="Edit">
+      </div>
+      <form method="post" class="delete-form">
+        {{ cus_form_delete.as_p }}
+        {% csrf_token %}
+        <div class="input-box" id="submit-form">
+          <input type="submit" name="delete" value="Delete customer">
+        </div>
+      </form>
+      <div class="clearfix"></div>
+    </div>
+    <!-- add forms -->
+    <div class="add-form">
+      <div class="manager-form">
+        <form method="post">
+          <h2 style="font-size: medium; margin-bottom: 18px; !important">Add Customer</h2>
+          {% for field in cus_form %}
+          <div class="input-box">
+            {{ field }}
+            <span>{{ field.label }}</span>
+          </div>
+          {% endfor %}
+          {% csrf_token %}
+          <div class="input-box" id="submit-form">
+            <input type="submit" name="add" value="Add new customer">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="edit-form">
+      <div class="manager-form">
+        <form method="post">
+          <h2 style="font-size: medium; margin-bottom: 18px; !important">Edit Customer</h2>
+          <!-- custid col: update table -->
+          <input type="hidden" id="id_custid" name="custid">
+          {% for field in cus_form %}
+          <div class="input-box">
+            {{ field }}
+            <span>{{ field.label }}</span>
+          </div>
+          {% endfor %}
+          {% csrf_token %}
+          <div class="input-box" id="submit-form">
+            <input type="submit" name="edit" value="Edit customer">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <h2 style="all: revert;">Employee Management</h2>
+
+  <div>
+    <!--  -->
+    <ul>
+      <li><a id="customeremployee-url" href="">Customer Employee</a></li>
+      <li><a href="/employees/">Employee Management</a></li>
+    </ul>
+  </div>
+
+  <div class="clearfix"></div>
+</div>
+{% endblock %}
+
+
+{% block content1 %}
+<div class="content">
+  <h2 style="all: revert;">Lọc khách hàng</h2>
+    
+</div>
+{% endblock %}
