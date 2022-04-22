@@ -20,6 +20,8 @@
     <table class="tablesorter hover-highlight focus-highlight">
       <thead>
         <tr>
+          <!-- check box -->
+          <th></th> 
           {% for col_name in cus_cols %}
           <th>{{ col_name }}</th>
           {% endfor %}
@@ -27,12 +29,14 @@
       </thead>
       <tfoot>
         <tr>
+          <!-- check box -->
+          <th></th>
           {% for col_name in cus_cols %}
           <th>{{ col_name }}</th>
           {% endfor %}
         </tr>
         <tr>
-          <td colspan="{{ cus_cols|length }}">
+          <td colspan="{{ cus_cols|length|add:1 }}">
             <div class="pager"> <span class="left">
                 # per page:
                 <a href="#" class="current">10</a> |
@@ -52,6 +56,7 @@
       <tbody>
         {% for cus in customers %}
         <tr>
+          <td><input type="checkbox" name="" id="cus_check"></td>
           {% for col_name in cus_cols %}
           <td>{{ cus|get_attr:col_name|default_if_none:'' }}</td>
           {% endfor %}

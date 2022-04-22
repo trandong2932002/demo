@@ -59,13 +59,13 @@
         {% for emp in cusemps %}
         <tr>
           {% for emp_element in emp %}
-          {% if emp_element == 'True'%}
-          <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}" checked="true"></td>
-          {% elif emp_element == 'False' %}
-          <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}"></td>
-          {% else %}
-          <td>{{ emp_element }}</td>
-          {% endif %}
+            {% if emp_element == 'True'%}
+            <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}" checked="true"></td>
+            {% elif emp_element == 'False' %}
+            <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}"></td>
+            {% else %}
+            <td>{{ emp_element }}</td>
+            {% endif %}
           {% endfor %}
         </tr>
         {% endfor %}

@@ -24,6 +24,7 @@
       <!-- table head -->
       <thead>
         <tr>
+          <th></th>
           {% for col_name in emp_cols %}
           <th>{{ col_name }}</th>
           {% endfor %}
@@ -32,12 +33,13 @@
       <!-- table foot -->
       <tfoot>
         <tr>
+          <th></th>
           {% for col_name in emp_cols %}
           <th>{{ col_name }}</th>
           {% endfor %}
         </tr>
         <tr>
-          <td colspan="{{ emp_cols|length }}">
+          <td colspan="{{ emp_cols|length|add:1 }}">
             <div class="pager"> <span class="left">
                 # per page:
                 <a href="#" class="current">10</a> |
@@ -58,6 +60,7 @@
       <tbody>
         {% for emp in employees %}
         <tr>
+          <td><input type="checkbox" name="" id="cus_check"></td>
           {% for col_name in emp_cols %}
           <td>{{ emp|get_attr:col_name|default_if_none:'' }}</td>
           {% endfor %}
