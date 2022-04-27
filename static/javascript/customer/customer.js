@@ -15,8 +15,8 @@ $(document).ready(function () {
     });
     // delete button
     $(".delete-form #id_delete_id").attr("value", row_data[1])
-    // change url of customeremployee
-    $('#customeremployee-url').attr('href', '/customeremployee/' + row_data[0])
+    // change url of customeremployee1
+    $('#customeremployee-url').attr('href', '/customeremployee/' + row_data[1])
   });
 })
 
