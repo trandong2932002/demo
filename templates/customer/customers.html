@@ -21,7 +21,7 @@
       <thead>
         <tr>
           <!-- check box -->
-          <th></th> 
+          <th></th>
           {% for col_name in cus_cols %}
           <th>{{ col_name }}</th>
           {% endfor %}
@@ -58,7 +58,15 @@
         <tr>
           <td><input type="checkbox" name="" id="cus_check"></td>
           {% for col_name in cus_cols %}
+          {% if col_name == 'custid' %}
+          <td>
+            <a href="/customerinfomation/{{ cus|get_attr:col_name|default_if_none:'' }}" style="display: block; text-decoration: none;">
+              {{ cus|get_attr:col_name|default_if_none:'' }}
+            </a>
+          </td>
+          {% else %}
           <td>{{ cus|get_attr:col_name|default_if_none:'' }}</td>
+          {% endif %}
           {% endfor %}
         </tr>
         {% endfor %}
@@ -134,8 +142,6 @@
     <ul>
       <li><a id="customeremployee-url" href="">Customer Employee</a></li>
       <li><a href="/employees/">Employee Management</a></li>
-      <li></li>
-      <li><a id="customerinfomation-url" href="">Customer Information</a></li>
     </ul>
   </div>
 
@@ -147,6 +153,6 @@
 {% block content1 %}
 <div class="content">
   <h2 style="all: revert;">Lọc khách hàng</h2>
-    
+
 </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends "cus_info/header.html" %}
 {% load get_attribute %}
+{% load get_item %}
 
 
 {% block title %}Customer Infomation{% endblock %}
@@ -13,7 +14,7 @@
 
 
 
-  <h2 style="all: revert;">Customer Order</h2>
+  <h2 style="all: revert;">Customer Orders</h2>
 
 
   <!-- table layout -->
@@ -65,8 +66,17 @@
         {% for order in order_list %}
         <tr>
           <td><input type="checkbox" name="" id="cus_check"></td>
+          <td>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#Orderdetail_{{ order|get_attr:'orderid' }}">
+              {{ order|get_attr:'orderid'|default_if_none:'' }}
+            </button>
+            <!-- <a href="" data-toggle="modal" data-target="#Orderdetail_{{ order|get_attr:'orderid' }}">
+              {{ order|get_attr:'orderid'|default_if_none:'' }}</a> -->
+          </td>
           {% for col_name in order_cols %}
+          {% if col_name != 'orderid' %}
           <td>{{ order|get_attr:col_name|default_if_none:'' }}</td>
+          {% endif %}
           {% endfor %}
         </tr>
         {% endfor %}
@@ -76,6 +86,9 @@
   <h3 style="all: revert;">Total order: {{ order_count }}</h3>
   <h3 style="all: revert;">Total amount: {{ total_amount }}</h3>
 
+
+
+
   <div>
     <ul>
       <li><a id="orderdetail-url" href="">Order detail</a></li>
@@ -83,4 +96,55 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block modals %}
+<!-- Order detail modals -->
+
+{% for order_detail in order_detail_list %}
+
+<div class="modal fade" id="Orderdetail_{{ order_detail|get_item:'orderid' }}" tabindex="1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Order detail</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- body here -->
+        <p>Customer: {{ cus.contactname }}</p>
+        <p>Order id: {{ order_detail|get_item:'orderid' }}</p>
+        <table>
+          <thead>
+            <tr>
+              {% for col_name in order_detail_cols %}
+              <th>{{ col_name }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% with order_detail=order_detail|get_item:'order_detail' %}
+            {% for order in order_detail %}
+            <tr>
+              {% for col_name in order_detail_cols %}
+              <td>{{ order|get_attr:col_name|default_if_none:'' }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+            {% endwith %}
+          </tbody>
+        </table>
+
+        <p>Amount: {{ order_detail|get_item:'amount' }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}
 {% endblock %}
