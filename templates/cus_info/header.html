@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% load get_attribute %}
+
+
+{% block load_js %}
+<!-- Demo stuff -->
+<script src="{% static 'javascript/reference/tablesorter/docs/js/prettify.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/reference/tablesorter/docs/css/jq.css' %}">
+<link href="{% static 'css/reference/tablesorter/docs/css/prettify.css' %}" rel="stylesheet">
+
+<!-- Tablesorter: required -->
+<script src="{% static 'javascript/reference/tablesorter/js/jquery.tablesorter.js' %}"></script>
+<script src="{% static 'javascript/reference/tablesorter/js/jquery.tablesorter.widgets.js' %}"></script>
+<script src="{% static 'javascript/reference/tablesorter/addons/pager/jquery.tablesorter.pager.js' %}"></script>
+<script src="{% static 'javascript/reference/tablesorter/beta-testing/pager-custom-controls.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/reference/tablesorter/css/theme.blue.css' %}">
+<link rel="stylesheet" href="{% static 'css/reference/tablesorter/addons/pager/jquery.tablesorter.pager.css' %}">
+
+<script src="{% static 'javascript/table.js' %}"></script>
+<script src="{% static 'javascript/cus_info/cus_info.js' %}"></script>
+{% endblock %}
+
+
+<!-- script in here for use django variable, maybe not :)) -->
+{% block script %}
+{% endblock %}
+
+
+{% block load_css %}
+<link rel="stylesheet" href="{% static 'css/customer/customer.css' %}">
+<link rel="stylesheet" href="{% static 'css/customer/tablesorter.css' %}">
+<link rel="stylesheet" href="{% static 'css/customer/cusform.css' %}">
+{% endblock %}

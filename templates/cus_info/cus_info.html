@@ -1,16 +1,20 @@
-{% extends "customeremployee/header.html" %}
-{% load static %}
+{% extends "cus_info/header.html" %}
 {% load get_attribute %}
 
 
-{% block title %}Customer employee{% endblock %}
+{% block title %}Customer Infomation{% endblock %}
 
 
 {% block content %}
 <div class="content">
+  <h2 style="all: revert;">Customer Infomation</h2>
+  <p>asdasdasd</p>
 
-  <!-- Customer employee -->
-  <h2 style="all: revert">Employee manager for Customer: id = {{ cus.0 }}, name = {{ cus.1 }}</h2>
+
+
+
+  <h2 style="all: revert;">Customer Order</h2>
+
 
   <!-- table layout -->
   <div class="table">
@@ -24,7 +28,8 @@
       <!-- table head -->
       <thead>
         <tr>
-          {% for col_name in cusemp_cols %}
+          <th></th>
+          {% for col_name in order_cols %}
           <th>{{ col_name }}</th>
           {% endfor %}
         </tr>
@@ -32,12 +37,13 @@
       <!-- table foot -->
       <tfoot>
         <tr>
-          {% for col_name in cusemp_cols %}
+          <th></th>
+          {% for col_name in order_cols %}
           <th>{{ col_name }}</th>
           {% endfor %}
         </tr>
         <tr>
-          <td colspan="{{ cusemp_cols|length }}">
+          <td colspan="{{ order_cols|length|add:1 }}">
             <div class="pager"> <span class="left">
                 # per page:
                 <a href="#" class="current">10</a> |
@@ -56,33 +62,24 @@
       </tfoot>
       <!-- table body -->
       <tbody>
-        {% for emp in cusemps %}
+        {% for order in order_list %}
         <tr>
-          {% for emp_element in emp %}
-            {% if emp_element == 'True'%}
-            <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}" checked="true"></td>
-            {% elif emp_element == 'False' %}
-            <td><input type="checkbox" name="" id="cusemp_check_{{ forloop.parentloop.counter }}"></td>
-            {% else %}
-            <td>{{ emp_element }}</td>
-            {% endif %}
+          <td><input type="checkbox" name="" id="cus_check"></td>
+          {% for col_name in order_cols %}
+          <td>{{ order|get_attr:col_name|default_if_none:'' }}</td>
           {% endfor %}
         </tr>
         {% endfor %}
       </tbody>
     </table>
+  </div>
+  <h3 style="all: revert;">Total order: {{ order_count }}</h3>
+  <h3 style="all: revert;">Total amount: {{ total_amount }}</h3>
 
-    <!-- buttons layout -->
-    <div class="manager-button">
-      <form method="post" class="save-form" id="checkbox-checked">
-        {{ cusemp_form.as_p }}
-        {% csrf_token %}
-        <div class="input-box" id="submit-form">
-          <input type="submit" name="save" value="Save">
-        </div>
-      </form>
-      <div class="clearfix"></div>
-    </div>
+  <div>
+    <ul>
+      <li><a id="orderdetail-url" href="">Order detail</a></li>
+    </ul>
   </div>
 
 </div>

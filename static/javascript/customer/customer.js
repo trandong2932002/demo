@@ -15,8 +15,10 @@ $(document).ready(function () {
     });
     // delete button
     $(".delete-form #id_delete_id").attr("value", row_data[1])
-    // change url of customeremployee1
+    // change url of customer employee
     $('#customeremployee-url').attr('href', '/customeremployee/' + row_data[1])
+    // change url of customer infomation
+    $('#customerinfomation-url').attr('href', '/customerinfomation/' + row_data[1])
   });
 })
 

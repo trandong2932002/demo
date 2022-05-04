@@ -15,8 +15,6 @@ def customer_employee(request: HttpRequest, id):
                 a, b = x.split('_')
                 if b == 'true':
                     cusemp_after.append(int(a))
-            print(cusemp_before)
-            print(cusemp_after)
             while len(cusemp_before) > 0:
                 x = cusemp_before[0]
                 if x in cusemp_after: # before, after -> pass
