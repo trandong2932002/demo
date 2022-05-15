@@ -12,7 +12,7 @@
   <div class= "block-row-space-between" style="margin-top: 20px">
 
     <!-- cell 1-->
-    <div class="block-column-center" style="width: 50%;">
+    <div class="block-column-center" style="width: 40%;">
 
       <div class="item-center">
         <h2>Shipped Orders</h2>
@@ -20,13 +20,15 @@
 
       <!-- form-->
       <div>
-        <form action="" method="post" class="block-row-space-around" style="align-items: center" id="shipped_date_form">
-          {% for field in shipped_date_form %}
-          <div class="input-box">
-            <span>{{ field.label }}</span>
-            {{ field }}
+        <form action="" method="post" class="block-row-space-around" style="align-items: center;" id="shipped_date_form">
+          <div class="block-column-center">
+            {% for field in shipped_date_form %}
+            <div class="input-box" style="margin-right: 0; margin-left: auto;">
+              <span>{{ field.label }}</span>
+              {{ field }}
+            </div>
+            {% endfor %}
           </div>
-          {% endfor %}
           {% csrf_token %}
           <button type="submit" name="change_shipped_date" class="btn btn-primary">Show</button>
         </form>
@@ -71,7 +73,7 @@
     </div>
 
     <!-- cell 2-->
-    <div class="block-column-center" style="width: 50%;">
+    <div class="block-column-center" style="width: 60%;">
 
       <div class="item-center">
         <h2>Order Discounts</h2>
@@ -156,3 +158,4 @@
 
 </div>
 {% endblock %}
+
