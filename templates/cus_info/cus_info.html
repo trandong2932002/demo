@@ -4,6 +4,7 @@
 {% load get_max %}
 {% load zip_lists %}
 {% load arithmetic_operators %}
+{% load get_index %}
 
 
 {% block title %}Customer Infomation{% endblock %}
@@ -14,287 +15,403 @@
   <div style="display: flex; flex-direction: column;">
     <!-- row 1: cus info and chart 1-->
     <div style="display: flex; justify-content: space-between;">
-      <div>
+      <div style="margin-left: 20px">
         <h2 style="all: revert;">Customer Infomation</h2>
         <p><b>Name: </b> {{ cus.contactname }}</p>
         <p><b>Address: </b> {{ cus.address }}</p>
         <p><b>Country: </b> {{ cus.country }}</p>
         <p><b>Phone: </b> {{ cus.phone }}</p>
       </div>
+
       <!-- Chart1 -->
-      <div>
-        <div style="margin: 22px 0px 0px 0px">
-          <h2 style="all: revert;">
-            Product Quantity per Category
-          </h2>
-        </div>
-        <!-- Chart here -->
+      {% if category_quantity|length > 0 %}
         <div>
-          <canvas id="myChart0" width="{{ category_name|length }}00" height="400"></canvas>
-          <script>
-            const ctx0 = document.getElementById('myChart0').getContext('2d');
-            const myChart0 = new Chart(ctx0, {
-              type: 'bar',
-              data: {
-                labels: [
-                  {% for name in category_name %}
-                    '{{ name }}',
-                  {% endfor %}
-                ],
-                datasets: [{
-                  label: '# Products: ',
-                  data: [
-                    {% for quantity in category_quantity %} 
-                      {{ quantity }},
+          <div style="margin: 22px 0px 0px 0px">
+            <h2 style="all: revert;">
+              Product Quantity by Category
+            </h2>
+          </div>
+          <!-- Chart here -->
+          <div>
+            <canvas id="myChart0" width="{{ category_name|length }}00" height="400"></canvas>
+            <script>
+              const ctx0 = document.getElementById('myChart0').getContext('2d');
+              const myChart0 = new Chart(ctx0, {
+                type: 'bar',
+                data: {
+                  labels: [
+                    {% for name in category_name %}
+                      '{{ name }}',
                     {% endfor %}
                   ],
-                  backgroundColor: [
-                    'rgba(237, 136, 82, 0.2)',
-                    'rgba(242, 205, 117, 0.2)',
-                    'rgba(186, 224, 135, 0.2)',
-                    'rgba(109, 203, 147, 0.2)',
-                    'rgba(71, 137, 122, 0.2)',
-                    'rgba(73, 117, 143, 0.2)',
-                    'rgba(202, 112, 21, 0.2)',
-                    'rgba(165, 74, 187, 0.2)',
-                  ],
-                  borderColor: [
-                    'rgba(237, 136, 82, 1)',
-                    'rgba(242, 205, 117, 1)',
-                    'rgba(186, 224, 135, 1)',
-                    'rgba(109, 203, 147, 1)',
-                    'rgba(71, 137, 122, 1)',
-                    'rgba(73, 117, 143, 1)',
-                    'rgba(202, 112, 21, 1)',
-                    'rgba(165, 74, 187, 1)',
-                  ],
-                  borderWidth: 1,
-                  datalabels: {
-                    color: '#8a8a8a'
-                  },
-                }]
-              },
-              plugins: [ChartDataLabels],
-              options: {
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    {% with quantity_max=category_quantity|get_max %}
-                      max: {{ quantity_max|mul:'0.1'|add:quantity_max }},
-                    {% endwith %}
-                    /* ticks: {
-                      stepSize: 1,
-                    }, */
+                  datasets: [{
+                    label: ' Products ',
+                    data: [
+                      {% for quantity in category_quantity %} 
+                        {{ quantity }},
+                      {% endfor %}
+                    ],
+                    backgroundColor: [
+                      'rgba(237, 136, 82, 0.2)',
+                      'rgba(242, 205, 117, 0.2)',
+                      'rgba(186, 224, 135, 0.2)',
+                      'rgba(109, 203, 147, 0.2)',
+                      'rgba(71, 137, 122, 0.2)',
+                      'rgba(73, 117, 143, 0.2)',
+                      'rgba(202, 112, 21, 0.2)',
+                      'rgba(165, 74, 187, 0.2)',
+                    ],
+                    borderColor: [
+                      'rgba(237, 136, 82, 1)',
+                      'rgba(242, 205, 117, 1)',
+                      'rgba(186, 224, 135, 1)',
+                      'rgba(109, 203, 147, 1)',
+                      'rgba(71, 137, 122, 1)',
+                      'rgba(73, 117, 143, 1)',
+                      'rgba(202, 112, 21, 1)',
+                      'rgba(165, 74, 187, 1)',
+                    ],
+                    borderWidth: 1,
+                    datalabels: {
+                      color: '#8a8a8a'
+                    },
+                  }]
+                },
+                plugins: [ChartDataLabels],
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      {% with quantity_max=category_quantity|get_max %}
+                        max: {{ quantity_max|mul:'0.1'|add:quantity_max }},
+                      {% endwith %}
+                      /* ticks: {
+                        stepSize: 1,
+                      }, */
+                    }
                   }
                 }
-              }
-            });
-          </script>
+              });
+            </script>
 
-        </div>
-        <!-- Description -->
-        <div style="margin-top: 10px;">
-          <div>
-            <b>Description</b>
           </div>
-          <div style="display: flex; justify-content: space-around;">
+          <!-- Description -->
+          <div style="margin-top: 10px;">
             <div>
-              {% for name, description in category_name|zip_lists:category_description %}
-              <p style="font-size: 13px; margin-bottom: 2px;">
-                <b>{{name}}</b>: {{description}}
-              </p>
-              {% if forloop.counter == 4 %}
+              <b>Description</b>
             </div>
-            <div>
-              {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- row 2: chart2 and chart3 -->
-    <div style="display: flex; justify-content: space-around; margin-top: 30px;">
-      <!-- chart 2 -->
-      <div>
-        <!-- title -->
-        <div>
-          <h2 style="all: revert; text-align: center;">
-            Shipped Orders
-          </h2>
-        </div>
-        <!-- chart here -->
-        <div>
-          <canvas id="myChart1" width="400" height="400"></canvas>
-          <script>
-            const ctx1 = document.getElementById('myChart1').getContext('2d');
-            const myChart1 = new Chart(ctx1, {
-              type: 'doughnut',
-              data: {
-                labels: ['On time', 'Late'],
-                datasets: [{
-                  data: [
-                  {% for ship in ship_order %}
-                    {{ ship }}, 
-                  {% endfor %}
-                  ],
-                  backgroundColor: [
-                    'rgba(109, 203, 147, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                  ],
-                  borderColor: [
-                    'rgba(109, 203, 147, 1)',
-                    'rgba(255, 99, 132, 1)',
-                  ],
-                  borderWidth: 1
-                }]
-              },
-              options: {
-              }
-            });
-          </script>
-
-        </div>
-      </div>
-      <!-- chart 3 -->
-      <div>
-        <div>
-          <h2 style="all: revert; text-align: center;">
-            Discount Orders
-          </h2>
-        </div>
-        <!-- chart here -->
-        <div>
-          <canvas id="myChart" width="400" height="400"></canvas>
-          <script>
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const myChart = new Chart(ctx, {
-              type: 'bar',
-              data: {
-                labels: [
-                {% for discount in discount_order %}
-                  {{ discount|get_item:'discount' }}, 
+            <div style="display: flex; justify-content: space-around;">
+              <div>
+                {% for name, description in category_name|zip_lists:category_description %}
+                <p style="font-size: 13px; margin-bottom: 2px;">
+                  <b>{{name}}</b>: {{description}}
+                </p>
+                {% if forloop.counter == 4 %}
+              </div>
+              <div>
+                {% endif %}
                 {% endfor %}
-                ],
-                datasets: [{
-                  label: '# Products: ',
-                  data: [
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- row 2: char 2-->
+    {% if orderdate|length > 0 %}
+      <div style="display: flex; justify-content:center;">
+        <div></div>
+        <div style="margin: 20px">
+          <div>
+            <h2 style="all: revert; text-align: center;">
+              Product Quantity by Month
+            </h2>
+          </div>
+          <!-- chart here -->
+          <div>
+            <canvas id="myChart1" width="{{ orderdate|length }}00" height="400"></canvas>
+            <script>
+              const ctx1 = document.getElementById('myChart1').getContext('2d');
+              const myChart1 = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                  labels: [
+                    {% for item in orderdate %}
+                      '{{ item }}',
+                    {% endfor %}
+                  ],
+                  datasets: [
+                    {% for layer in category_quantity_by_month %}
+                      {
+                        label: ' {{ category_name|get_index:forloop.counter0 }} ',
+                        data: [
+                          {% for item in layer %}
+                            {{ item }},
+                          {% endfor %}
+                        ],
+                        backgroundColor: [
+                          {% for i in '01234567'|make_list %}
+                            '{{ background_color|get_index:forloop.parentloop.counter0 }}',
+                          {% endfor %}
+                        ],
+                        borderColor: [
+                          {% for i in '01234567'|make_list %}
+                            '{{ border_color|get_index:forloop.parentloop.counter0 }}',
+                          {% endfor %}
+                        ],
+                        borderWidth: 1,
+                      },
+                    {% endfor %}
+                  ]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      /* ticks: {
+                        stepSize: 1,
+                      }, */
+                      stacked: true,
+                    },
+                    x: {
+                      stacked: true,
+                    }
+                  },
+                  plugins: {
+                    legend: {
+                      display: false
+                    }
+                  },
+                }
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- row 3: chart3 and chart4 -->
+    <div style="display: flex; justify-content: space-around; margin-top: 30px;">
+      <!-- chart 3 -->
+      {% if ship_order|length > 0 %}
+        <div>
+          <!-- title -->
+          <div>
+            <h2 style="all: revert; text-align: center;">
+              Shipped Orders
+            </h2>
+          </div>
+          <!-- chart here -->
+          <div>
+            <canvas id="myChart2" width="400" height="400"></canvas>
+            <script>
+              const ctx2 = document.getElementById('myChart2').getContext('2d');
+              const myChart2 = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                  labels: ['On time', 'Late'],
+                  datasets: [{
+                    data: [
+                    {% for ship in ship_order %}
+                      {{ ship }}, 
+                    {% endfor %}
+                    ],
+                    backgroundColor: [
+                      'rgba(109, 203, 147, 0.2)',
+                      'rgba(255, 99, 132, 0.2)',
+                    ],
+                    borderColor: [
+                      'rgba(109, 203, 147, 1)',
+                      'rgba(255, 99, 132, 1)',
+                    ],
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                }
+              });
+            </script>
+
+          </div>
+        </div>
+      {% endif %}
+      <!-- chart 4 -->
+
+      {% if discount_order|length > 0 %}
+        <div>
+          <div>
+            <h2 style="all: revert; text-align: center;">
+              Discount Orders
+            </h2>
+          </div>
+          <!-- chart here -->
+          <div>
+            <canvas id="myChart3" width="{{ discount_order|length }}00" height="400"></canvas>
+            <script>
+              const ctx3 = document.getElementById('myChart3').getContext('2d');
+              const myChart3 = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                  labels: [
                   {% for discount in discount_order %}
-                    {{ discount|get_item:'count' }}, 
+                    {{ discount|get_item:'discount' }}, 
                   {% endfor %}
                   ],
-                  backgroundColor: [
-                    'rgba(237, 136, 82, 0.2)',
-                    'rgba(242, 205, 117, 0.2)',
-                    'rgba(186, 224, 135, 0.2)',
-                    'rgba(109, 203, 147, 0.2)',
-                ],
-                  borderColor: [
-                    'rgba(237, 136, 82, 1)',
-                    'rgba(242, 205, 117, 1)',
-                    'rgba(186, 224, 135, 1)',
-                    'rgba(109, 203, 147, 1)',
+                  datasets: [{
+                    label: '# Products: ',
+                    data: [
+                    {% for discount in discount_order %}
+                      {{ discount|get_item:'count' }}, 
+                    {% endfor %}
+                    ],
+                    backgroundColor: [
+                      'rgba(237, 136, 82, 0.2)',
+                      'rgba(242, 205, 117, 0.2)',
+                      'rgba(186, 224, 135, 0.2)',
+                      'rgba(109, 203, 147, 0.2)',
                   ],
-                  borderWidth: 1,
-                  datalabels: {
-                    color: '#8a8a8a'
-                  }
-                }]
-              },
-              plugins: [ChartDataLabels],
-              options: {
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    {% with quantity_max=discount_order|get_max_in_dict:'count' %}
-                      max: {{ quantity_max|mul:'0.1'|add:quantity_max }},
-                    {% endwith %}
-                    /* ticks: {
-                      stepSize: 1,
-                    },*/
+                    borderColor: [
+                      'rgba(237, 136, 82, 1)',
+                      'rgba(242, 205, 117, 1)',
+                      'rgba(186, 224, 135, 1)',
+                      'rgba(109, 203, 147, 1)',
+                    ],
+                    borderWidth: 1,
+                    datalabels: {
+                      color: '#8a8a8a'
+                    }
+                  }]
+                },
+                plugins: [ChartDataLabels],
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      {% with quantity_max=discount_order|get_max_in_dict:'count' %}
+                        max: {{ quantity_max|mul:'0.1'|add:quantity_max }},
+                      {% endwith %}
+                      /* ticks: {
+                        stepSize: 1,
+                      },*/
+                    }
                   }
                 }
-              }
-            });
-          </script>
+              });
+            </script>
 
+          </div>
         </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <h2 style="all: revert; margin-bottom: 0px">Orders</h2>
+  <!-- table layout -->
+  <div style="display: flex; flex-direction: column;">
+    <div class="table" style="margin-bottom: 10px;">
+      <!-- pager -->
+      <div class="pager">
+        <span class="pagedisplay"></span>
+      </div>
+  
+      <!-- table -->
+      <table class="tablesorter hover-highlight focus-highlight" style="width: 97%;" id="table_order">
+        <!-- table head -->
+        <thead>
+          <tr>
+            {% for col_name in order_cols %}
+            <th>{{ col_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <!-- table foot -->
+        <tfoot>
+          <tr>
+            {% for col_name in order_cols %}
+            <th>{{ col_name }}</th>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td colspan="{{ order_cols|length|add:1 }}">
+              <div class="pager"> <span class="left">
+                  # per page:
+                  <a href="#" class="current">10</a> |
+                  <a href="#">25</a> |
+                  <a href="#">50</a> |
+                  <a href="#">100</a>
+                </span>
+                <span class="right">
+                  <span class="prev">Prev</span>
+                  <span class="pagecount"></span>
+                  <span class="next">Next</span>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+        <!-- table body -->
+        <tbody>
+          {% for order in order_list %}
+          <tr>
+            <td>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#Orderdetail_{{ order|get_attr:'orderid' }}">
+                {{ order|get_attr:'orderid'|default_if_none:'' }}
+              </button>
+            </td>
+            {% for col_name in order_cols %}
+            {% if col_name != 'orderid' %}
+            <td>{{ order|get_attr:col_name|default_if_none:'' }}</td>
+            {% endif %}
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div style="display: flex; justify-content: space-around; align-items: center;">
+      <div class="manager">
+        <!-- button  -->
+        <div class="manager-button">
+          <div class="input-box">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#add_order">
+              Add Order
+            </button>
+          </div>
+          <div class="input-box">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#edit_order">
+              Edit Order
+            </button>
+          </div>
+          <!-- delete button -->
+          <form method="post" class="delete-form">
+            {{ order_form_delete.as_p }}
+            {% csrf_token %}
+            <div class="input-box" id="submit-form">
+              <button type="submit" name="delete">
+                Delete Order
+              </button>
+            </div>
+          </form>
+          
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <!-- total order info -->
+      <div style="display: flex; flex-direction:column; align-items: flex-end;">
+        <b>Total order: {{ order_count }}</b>
+        <b>Total amount: {{ total_amount }}</b>
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-  <h2 style="all: revert;">Orders</h2>
-  <!-- table layout -->
-  <div class="table">
-    <!-- pager -->
-    <div class="pager">
-      <span class="pagedisplay"></span>
-    </div>
-
-    <!-- table -->
-    <table class="tablesorter hover-highlight focus-highlight" style="width: 97%;">
-      <!-- table head -->
-      <thead>
-        <tr>
-          {% for col_name in order_cols %}
-          <th>{{ col_name }}</th>
-          {% endfor %}
-        </tr>
-      </thead>
-      <!-- table foot -->
-      <tfoot>
-        <tr>
-          {% for col_name in order_cols %}
-          <th>{{ col_name }}</th>
-          {% endfor %}
-        </tr>
-        <tr>
-          <td colspan="{{ order_cols|length|add:1 }}">
-            <div class="pager"> <span class="left">
-                # per page:
-                <a href="#" class="current">10</a> |
-                <a href="#">25</a> |
-                <a href="#">50</a> |
-                <a href="#">100</a>
-              </span>
-              <span class="right">
-                <span class="prev">Prev</span>
-                <span class="pagecount"></span>
-                <span class="next">Next</span>
-              </span>
-            </div>
-          </td>
-        </tr>
-      </tfoot>
-      <!-- table body -->
-      <tbody>
-        {% for order in order_list %}
-        <tr>
-          <td>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#Orderdetail_{{ order|get_attr:'orderid' }}">
-              {{ order|get_attr:'orderid'|default_if_none:'' }}
-            </button>
-            {% comment %}<a href="" data-toggle="modal" data-target="#Orderdetail_{{ order|get_attr:'orderid' }}">
-              {{ order|get_attr:'orderid'|default_if_none:'' }}</a> {% endcomment %}
-          </td>
-          {% for col_name in order_cols %}
-          {% if col_name != 'orderid' %}
-          <td>{{ order|get_attr:col_name|default_if_none:'' }}</td>
-          {% endif %}
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <h3 style="all: revert;">Total order: {{ order_count }}</h3>
-  <h3 style="all: revert;">Total amount: {{ total_amount }}</h3>
 </div>
 {% endblock %}
 
@@ -348,5 +465,77 @@
   </div>
 </div>
 {% endfor %}
+
+<!-- modal add edit-->
+<div class="modal fade" id="add_order" tabindex="1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="add-form">
+        <div class="manager-form">
+          <!-- body here -->
+          <div class="modal-body">
+            <form action="" method="post">
+              {% for field in order_form %}
+              <div class="input-box">
+                {% if forloop.counter != 1 %}
+                  <span>{{ field.label }}</span>
+                {% endif %}
+                {{ field }}
+              </div>
+              {% endfor %}
+              {% csrf_token %}
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit"  name="add" class="btn btn-primary">Add New Order</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit_order" tabindex="1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Order</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="edit-form"> <!-- js choose exactly cus to edit-->
+        <div class="manager-form">
+          <!-- body here -->
+          <div class="modal-body">
+            <form action="" method="post">
+              {% for field in order_form %}
+              <div class="input-box">
+                {% if forloop.counter != 1 %}
+                  <span>{{ field.label }}</span>
+                {% endif %}
+                {{ field }}
+              </div>
+              {% endfor %}
+              <div>
+                <input type="hidden" id="order_id" name="orderid">
+              </div>
+              {% csrf_token %}
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit"  name="edit" class="btn btn-primary">Edit Order</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 

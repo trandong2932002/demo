@@ -23,5 +23,5 @@ urlpatterns = [
     path('employees/', include('emp_manager.urls', namespace='emp_manager')),
     path('customeremployee/', include('customeremployee.urls', namespace='cus_emp')),
     path('marketing/', include('marketing.urls', namespace='marketing')),
-    path('customerinfomation/', include('cus_info.urls', namespace='cus_info')),
+    path('customerinformation/', include('cus_info.urls', namespace='cus_info')),
 ]

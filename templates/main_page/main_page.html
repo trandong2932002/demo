@@ -1,7 +1,158 @@
-{% extends "base.html" %}
+{% extends "main_page/header.html" %}
+{% load get_item %}
+{% load get_index %}
+{% load get_max %}
+{% load arithmetic_operators %}
 
 {% block title %}Main page{% endblock %}
 
 {% block content %}
-<h1>Welcome to CRM</h1>
+<div class="content">
+  <!-- row 1-->
+  <div class= "block-row-space-between" style="margin-top: 20px">
+
+    <!-- cell 1-->
+    <div class="block-column-center" style="width: 50%;">
+
+      <div class="item-center">
+        <h2>Shipped Orders</h2>
+      </div>
+
+      <!-- form-->
+      <div>
+        <form action="" method="post" class="block-row-space-around" style="align-items: center" id="shipped_date_form">
+          {% for field in shipped_date_form %}
+          <div class="input-box">
+            <span>{{ field.label }}</span>
+            {{ field }}
+          </div>
+          {% endfor %}
+          {% csrf_token %}
+          <button type="submit" name="change_shipped_date" class="btn btn-primary">Show</button>
+        </form>
+      </div>
+
+      <!-- chart 1-->
+      {% if shipped_date|length > 0 %}
+        <div class="item-center">
+          <div style="width: 70%;">
+            <canvas id="myChart1" width="400" height="400"></canvas>
+            <script>
+              const ctx1 = document.getElementById('myChart1').getContext('2d');
+              const myChart1 = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                  labels: ['On time', 'Late'],
+                  datasets: [{
+                    data: [
+                    {% for ship in shipped_date %}
+                      {{ ship }}, 
+                    {% endfor %}
+                    ],
+                    backgroundColor: [
+                      'rgba(109, 203, 147, 0.2)',
+                      'rgba(255, 99, 132, 0.2)',
+                    ],
+                    borderColor: [
+                      'rgba(109, 203, 147, 1)',
+                      'rgba(255, 99, 132, 1)',
+                    ],
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                }
+              });
+            </script>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+
+    <!-- cell 2-->
+    <div class="block-column-center" style="width: 50%;">
+
+      <div class="item-center">
+        <h2>Order Discounts</h2>
+      </div>
+
+      <!-- form-->
+      <div>
+        <form action="" method="post" class="block-row-space-around" style="align-items: center" id="order_discount_form">
+          {% for field in order_discount_form %}
+          <div class="input-box">
+            <span>{{ field.label }}</span>
+            {{ field }}
+          </div>
+          {% endfor %}
+          {% csrf_token %}
+          <button type="submit" name="change_order_discount" class="btn btn-primary">Show</button>
+        </form>
+      </div>
+
+      <!-- chart 2-->
+      {% if order_discount|length > 0 %}
+        <div class="item-center">
+          <div>
+            <canvas id="myChart2" width="630" height="400"></canvas>
+            <script>
+              const ctx2 = document.getElementById('myChart2').getContext('2d');
+              const myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                  labels: [
+                  {% for discount in order_discount %}
+                    {{ discount|get_item:'discount' }}, 
+                  {% endfor %}
+                  ],
+                  datasets: [{
+                    label: '# Products: ',
+                    data: [
+                    {% for discount in order_discount %}
+                      {{ discount|get_item:'count' }}, 
+                    {% endfor %}
+                    ],
+                    backgroundColor: [
+                      'rgba(237, 136, 82, 0.2)',
+                      'rgba(242, 205, 117, 0.2)',
+                      'rgba(186, 224, 135, 0.2)',
+                      'rgba(109, 203, 147, 0.2)',
+                  ],
+                    borderColor: [
+                      'rgba(237, 136, 82, 1)',
+                      'rgba(242, 205, 117, 1)',
+                      'rgba(186, 224, 135, 1)',
+                      'rgba(109, 203, 147, 1)',
+                    ],
+                    borderWidth: 1,
+                    datalabels: {
+                      color: '#8a8a8a'
+                    }
+                  }]
+                },
+                plugins: [ChartDataLabels],
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      {% with quantity_max=order_discount|get_max_in_dict:'count' %}
+                        max: {{ quantity_max|mul:'0.1'|add:quantity_max }},
+                      {% endwith %}
+                      /* ticks: {
+                        stepSize: 1,
+                      },*/
+                    }
+                  }
+                }
+              });
+            </script>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
 {% endblock %}

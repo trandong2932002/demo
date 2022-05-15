@@ -11,17 +11,9 @@
   margin-left: 10px;
 }
 
-.add-form {
-  display: none;
-}
-
 .add-form.active {
   display: block;
   /* position: absolute; */
-}
-
-.edit-form {
-  display: none;
 }
 
 .edit-form.active {
@@ -33,5 +25,5 @@
   margin: 20px;
   display: flex;
   flex-direction: row;
-  width: 55%;
+  justify-content: center;
 }

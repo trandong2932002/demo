@@ -13,7 +13,7 @@
 
 
   <!-- table here -->
-  <div class="table">
+  <div class="table" style="width: 97%;">
     <div class="pager">
       <span class="pagedisplay"></span>
     </div>
@@ -60,7 +60,7 @@
           {% for col_name in cus_cols %}
           {% if col_name == 'custid' %}
           <td>
-            <a href="/customerinfomation/{{ cus|get_attr:col_name|default_if_none:'' }}" style="display: block; text-decoration: none;">
+            <a href="/customerinformation/{{ cus|get_attr:col_name|default_if_none:'' }}" style="display: block; text-decoration: none;">
               {{ cus|get_attr:col_name|default_if_none:'' }}
             </a>
           </td>
@@ -80,78 +80,102 @@
     <!-- button  -->
     <div class="manager-button">
       <div class="input-box">
-        <input type="button" class="button" value="Add">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#add_customer">
+          Add Customer
+        </button>
       </div>
       <div class="input-box">
-        <input type="button" class="button" value="Edit">
+        {% comment %} <input type="button" class="button" value="Edit"> {% endcomment %}
+        <button type="button" data-bs-toggle="modal" data-bs-target="#edit_customer">
+          Edit Customer
+        </button>
       </div>
+      <!-- delete button -->
       <form method="post" class="delete-form">
         {{ cus_form_delete.as_p }}
         {% csrf_token %}
         <div class="input-box" id="submit-form">
-          <input type="submit" name="delete" value="Delete customer">
+          {% comment %} <input type="submit" name="delete" value="Delete customer"> {% endcomment %}
+          <button type="submit" name="delete">
+            Delete Customer
+          </button>
         </div>
       </form>
+      
       <div class="clearfix"></div>
     </div>
-    <!-- add forms -->
-    <div class="add-form">
-      <div class="manager-form">
-        <form method="post">
-          <h2 style="font-size: medium; margin-bottom: 18px; !important">Add Customer</h2>
-          {% for field in cus_form %}
-          <div class="input-box">
-            {{ field }}
-            <span>{{ field.label }}</span>
-          </div>
-          {% endfor %}
-          {% csrf_token %}
-          <div class="input-box" id="submit-form">
-            <input type="submit" name="add" value="Add new customer">
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div class="edit-form">
-      <div class="manager-form">
-        <form method="post">
-          <h2 style="font-size: medium; margin-bottom: 18px; !important">Edit Customer</h2>
-          <!-- custid col: update table -->
-          <input type="hidden" id="id_custid" name="custid">
-          {% for field in cus_form %}
-          <div class="input-box">
-            {{ field }}
-            <span>{{ field.label }}</span>
-          </div>
-          {% endfor %}
-          {% csrf_token %}
-          <div class="input-box" id="submit-form">
-            <input type="submit" name="edit" value="Edit customer">
-          </div>
-        </form>
-      </div>
-    </div>
   </div>
 
 
-  <h2 style="all: revert;">Employee Management</h2>
-
-  <div>
-    <!--  -->
-    <ul>
-      <li><a href="/employees/">Employee Management</a></li>
-    </ul>
-  </div>
+  <h2 style="all: revert;"><a href="/employees/" style="text-decoration: none">Goto Employee Management</a></li></h2>
 
   <div class="clearfix"></div>
 </div>
 {% endblock %}
 
 
-{% block content1 %}
-<div class="content">
-  <h2 style="all: revert;">Lọc khách hàng</h2>
+{% block modals %}
+<div class="modal fade" id="add_customer" tabindex="1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Customer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="manager-form">
+        <!-- body here -->
+        <div class="modal-body">
+          <form action="" method="post">
+            {% for field in cus_form %}
+            <div class="input-box">
+              <span>{{ field.label }}</span>
+              {{ field }}
+            </div>
+            {% endfor %}
+            {% csrf_token %}
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit"  name="add" class="btn btn-primary">Add New Customer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="modal fade" id="edit_customer" tabindex="1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Customer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="edit-form"> <!-- js choose exactly cus to edit-->
+        <div class="manager-form">
+          <!-- body here -->
+          <div class="modal-body">
+            <form action="" method="post">
+              <!-- custid col: update table -->
+              <input type="hidden" id="id_custid" name="custid">
+              {% for field in cus_form %}
+              <div class="input-box">
+                <span>{{ field.label }}</span>
+                {{ field }}
+              </div>
+              {% endfor %}
+              {% csrf_token %}
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit"  name="edit" class="btn btn-primary">Edit Customer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -1,11 +1,4 @@
 $(document).ready(function () {
-  $('.button').click(function () {
-    if ($(this)[0].value.toLowerCase() == 'delete') {
-    }
-    else {
-      $('.' + $(this)[0].value.toLowerCase() + '-form').toggleClass('active')
-    }
-  });
   // select row -> add id to edit, delete forms, add id into url of cusemp
   $("table.tablesorter tbody tr").click(function () {
     row_data = $(this)[0].innerText.split("\t")

@@ -27,12 +27,9 @@
   z-index: 1;
 }
 
-#submit-form {
-  text-align: center;
-}
 
-.manager .input-box input[type="submit"],
-.manager .input-box input[type="button"] {
+.manager-button .input-box button[type="submit"],
+.manager .input-box button[type="button"] {
   width: 200px;
   background-color: #069370;
   color: #fff;
@@ -44,3 +41,7 @@
   margin: auto;
 }
 
+.modal-body .input-box {
+  display: flex;
+  flex-direction: column;
+}
