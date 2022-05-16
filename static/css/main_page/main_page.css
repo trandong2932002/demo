@@ -1,7 +1,6 @@
 .item-center {
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .block-column-center {
@@ -26,4 +25,9 @@
   display: flex;
   justify-content: space-around;
   flex-direction: row;
+}
+
+.grid-container {
+  display: grid;
+  gap: 20px;
 }

@@ -20,7 +20,7 @@
     </div>
 
     <!-- table -->
-    <table class="tablesorter hover-highlight focus-highlight">
+    <table class="tablesorter hover-highlight focus-highlight" style="width: 97%;">
       <!-- table head -->
       <thead>
         <tr>
@@ -71,65 +71,99 @@
   </div>
 
   <div class="manager">
-    <!-- button layout -->
+    <!-- button layout -->  
     <div class="manager-button">
       <div class="input-box">
-        <input type="button" class="button" value="Add">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#add_employee">
+          Add Employee
+        </button>
       </div>
       <div class="input-box">
-        <input type="button" class="button" value="Edit">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#edit_employee">
+          Edit Employee
+        </button>
       </div>
-      <div class="input-box">
-        <form method="post" class="delete-form">
-          {{ emp_form_delete.as_p }}
-          {% csrf_token %}
-          <div id="submit-form">
-            <input type="submit" name="delete" value="Delete">
-          </div>
-        </form>
-      </div>
+      <!-- delete button -->
+      <form method="post" class="delete-form">
+        {{ emp_form_delete.as_p }}
+        {% csrf_token %}
+        <div class="input-box" id="submit-form">
+          <button type="submit" name="delete">
+            Delete Employee
+          </button>
+        </div>
+      </form>
+      
       <div class="clearfix"></div>
     </div>
-  
-    <!-- form layout -->
-    <div class="add-form">
-      <div class="manager-form">
-        <form method="post">
-          <h2 style="font-size: medium; margin-bottom: 18px; !important">Add Employee</h2>
-          {% for field in emp_form %}
-          <div class="input-box">
-            {{ field }}
-            <span>{{ field.label }}</span>
-          </div>
-          {% endfor %}
-          {% csrf_token %}
-          <div class="input-box" id="submit-form">
-            <input type="submit" name="add" value="Add new employee">
-          </div>
-        </form>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="add_employee" tabindex="1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    </div>
-    <div class="edit-form">
       <div class="manager-form">
-        <form method="post">
-          <h2 style="font-size: medium; margin-bottom: 18px; !important">Edit Employee</h2>
-          <!-- custid col: update table -->
-          <input type="hidden" id="id_empid" name="empid">
-          {% for field in emp_form %}
-          <div class="input-box">
-            {{ field }}
-            <span>{{ field.label }}</span>
-          </div>
-          {% endfor %}
-          {% csrf_token %}
-          <div class="input-box" id="submit-form">
-            <input type="submit" name="edit" value="Edit employee">
-          </div>
-        </form>
+        <!-- body here -->
+        <div class="modal-body">
+          <form action="" method="post">
+            {% for field in emp_form %}
+            <div class="input-box">
+              <span>{{ field.label }}</span>
+              {{ field }}
+            </div>
+            {% endfor %}
+            {% csrf_token %}
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit"  name="add" class="btn btn-primary">Add New Employee</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="edit_employee" tabindex="1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="edit-form"> <!-- js choose exactly cus to edit-->
+        <div class="manager-form">
+          <!-- body here -->
+          <div class="modal-body">
+            <form action="" method="post">
+              <!-- custid col: update table -->
+              <input type="hidden" id="id_empid" name="empid">
+              {% for field in emp_form %}
+              <div class="input-box">
+                <span>{{ field.label }}</span>
+                {{ field }}
+              </div>
+              {% endfor %}
+              {% csrf_token %}
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit"  name="edit" class="btn btn-primary">Edit Employee</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-
+</div>
 {% endblock %}

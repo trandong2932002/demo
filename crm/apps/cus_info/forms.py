@@ -1,6 +1,7 @@
 from django import forms
 from crm.models import Salesorder, Employee, Shipper
 
+#
 def LoadEmployeeChoices():
     query_result = Employee.objects.all().values_list('empid', 'lastname', 'titleofcourtesy')
     choice_result = []
@@ -22,6 +23,8 @@ def LoadShipCompanyChoices():
 EMPLOYEE_CHOICES = LoadEmployeeChoices()
 SHIPPER_CHOICES = LoadShipCompanyChoices()
 
+
+# FORM
 class AddOrderDetailForm(forms.ModelForm):
     class Meta:
         model = Salesorder
