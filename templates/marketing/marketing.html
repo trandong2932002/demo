@@ -1,9 +1,109 @@
-{% extends "base.html" %}
+{% extends "marketing/header.html" %}
+{% load get_attribute %}
+{% load get_item %}
+{% load get_max %}
+{% load zip_lists %}
+{% load arithmetic_operators %}
+{% load get_index %}
 
 {% block title %}Marketing{% endblock %}
 
 {% block content %}
+
+{% endblock %}
+
+{% block content1 %}
 <div class="content">
-    <h1>Marketing</h1>
+
+  <!-- row 1-->
+  <div style="margin-top: 20px;">
+    <!-- cell 1-->
+    <div>
+
+      <div class="item-center">
+        <h2>Customer Filter</h2>
+      </div>
+
+      <!-- form-->
+      <div>
+        <form action="" method="post" class="block-row-space-around" style="align-items: center;"
+          id="customer_filter_form">
+          <div class="block-row-space-around" style="width: 60%;">
+            {% for field in customer_filter_form %}
+            <div class="input-box" style="margin-right: 0; margin-left: auto;">
+              <span>{{ field.label }}</span>
+              {{ field }}
+            </div>
+            {% endfor %}
+          </div>
+          {% csrf_token %}
+          <button type="submit" name="change_customer_filter_form" class="btn btn-primary">Show</button>
+        </form>
+      </div>
+      <!-- table-->
+      <div>
+        <div class="pager block-row-space-between">
+          <div>
+            <button type="button" class="btn btn-secondary btn-sm" id="select_all">Select All</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="deselect_all">Deselect All</button>
+          </div>
+          <span class="pagedisplay"></span>
+        </div>
+        <table class="tablesorter hover-highlight focus-highlight" id="table_customer_filter">
+          <!-- table head -->
+          <thead>
+            <tr>
+              <th></th>
+              {% for col_name in customer_filter_cols %}
+              <th>{{ col_name }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <!-- table foot -->
+          <tfoot>
+            <tr>
+              <th></th>
+              {% for col_name in customer_filter_cols %}
+              <th>{{ col_name }}</th>
+              {% endfor %}
+            </tr>
+            <tr>
+              <td colspan="{{ customer_filter_cols|length|add:1 }}">
+                <div class="pager"> <span class="left">
+                    # per page:
+                    <a href="#" class="current">10</a> |
+                    <a href="#">25</a> |
+                    <a href="#">50</a> |
+                    <a href="#">100</a>
+                  </span>
+                  <span class="right">
+                    <span class="prev">Prev</span>
+                    <span class="pagecount"></span>
+                    <span class="next">Next</span>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+          <!-- table body -->
+          <tbody>
+            {% for cus in customer_filter %}
+            <tr>
+              <td><input type="checkbox" name="" id="cus_check"></td>
+              {% for col_name in customer_filter_cols %}
+              <td>{{ cus|get_item:col_name|default_if_none:'' }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div></div>
+
+    </div>
+  </div>
+
+
 </div>
 {% endblock %}

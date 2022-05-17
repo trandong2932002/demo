@@ -1,5 +1,94 @@
+from datetime import date
+from django.db import connection
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
+from .forms import CustomerFilter, CATEGORY_CHOICES, CUSTOMER_COUNTRY_CHOICES
 
-# Create your views here.
+# VIEWS
 def marketing(request):
-    return render(request, 'marketing/marketing.html')
+
+    now = str(date.today())
+    # form
+    customer_filter_form = CustomerFilter()
+    # data
+    customer_filter = GetCustomerFilter('2000-01-01', now)
+    customer_filter_cols = [key for key in customer_filter[0].keys()]
+
+    data = {
+        # form
+        'customer_filter_form': customer_filter_form,
+        # data
+        'customer_filter_cols': customer_filter_cols,
+        'customer_filter': customer_filter,
+    }
+
+
+    return render(request, 'marketing/marketing.html', data)
+
+
+# AJAX
+def ChangeCustomerFilter(request: HttpRequest):
+    if is_ajax(request=request) and request.method == 'POST':
+        customer_filter_form = CustomerFilter(data=request.POST)
+        if customer_filter_form.is_valid():
+            customer_filter_form.cleaned_data
+            category = customer_filter_form.data['category']
+            country = customer_filter_form.data['country']
+            start_at = customer_filter_form.data['start_at']
+            end_at = customer_filter_form.data['end_at']
+
+            customer_filter = GetCustomerFilter(start_at, end_at, category, country)
+
+            data = {
+                'success': 'success',
+                'category': category,
+                'country': country,
+                'customer_filter': customer_filter,
+            }
+
+            return JsonResponse(data, status=200)
+        else:
+            return JsonResponse({'error': 'error'}, status=400)
+
+# GET DATA
+def GetCustomerFilter(start_at, end_at, category = '9', country = '22'):
+    query_category = ''
+    query_customer_country = ''
+    if category != '9': # all
+        query_category = f"where categoryid={category}"
+    if country != '22': # all
+        country_name = next(x[1] for x in CUSTOMER_COUNTRY_CHOICES if x[0] == int(country))
+        query_customer_country = f"where country='{country_name}'"
+    query = f"""
+    select custid, companyname, contactname, phone, fax, sum(qty) as qty, sum(amount) as amount from product inner join
+    (select companyname, contactname, phone, fax, productid, round(unitprice*qty*(1-discount),2) as amount, qty, custid from orderdetail inner join
+    (select A.custid, companyname, contactname, phone, fax, orderid from customer inner join
+    (select cast(custid as integer) as custid, orderid from salesorder
+    where orderdate <= shippeddate
+    and orderdate >= '{start_at}' and orderdate <= '{end_at}') A
+    on customer.custid = A.custid
+    {query_customer_country}
+    ) C
+    on orderdetail.orderid = C.orderid) B
+    on product.productid = B.productid
+    {query_category}
+    group by custid, companyname, contactname, phone, fax
+    order by custid
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = dictfetchall(cursor)
+    return result
+
+
+# ADDITION FUNC
+def dictfetchall(cursor): 
+    "Returns all rows from a cursor as a dict"
+    desc = cursor.description 
+    return [
+            dict(zip([col[0] for col in desc], row)) 
+            for row in cursor.fetchall() 
+    ]
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'

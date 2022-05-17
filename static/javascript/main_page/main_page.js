@@ -38,7 +38,7 @@ $(document).ready(function () {
         // change label
         myChart2.data.labels = order_discount_labels
         // change upper bound of axis y
-        myChart2.config._config.options.scales.y.max = Math.round(Math.max(...order_discount)*1.1)
+        myChart2.config._config.options.scales.y.max = Math.round(Math.max(...order_discount) * 1.1)
         // update chart
         myChart2.update()
       },
@@ -63,11 +63,11 @@ $(document).ready(function () {
         });
         // change upper bound of axis y
         if (response.type != 10) { // only 1 category
-          myChart3.config._config.options.scales.y.max = Math.round(Math.max(...revenue_datasets[0].data)*1.1)
+          myChart3.config._config.options.scales.y.max = Math.round(Math.max(...revenue_datasets[0].data) * 1.1)
         } else { // all category
-          var max = Math.round(Math.max(...revenue_datasets[0].data)*1.1)
+          var max = Math.round(Math.max(...revenue_datasets[0].data) * 1.1)
           for (let index = 1; index < revenue_datasets.length; index++) {
-            var temp = Math.round(Math.max(...revenue_datasets[index].data)*1.1)
+            var temp = Math.round(Math.max(...revenue_datasets[index].data) * 1.1)
             if (temp > max) {
               max = temp
             }
@@ -76,7 +76,7 @@ $(document).ready(function () {
         }
         // change dataset
         myChart3.data.datasets = revenue_datasets
-        console.log( myChart3.data)
+        console.log(myChart3.data)
         // change label
         myChart3.data.labels = revenue_labels
         // update chart
