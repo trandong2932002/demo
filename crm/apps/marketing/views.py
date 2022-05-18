@@ -2,7 +2,9 @@ from datetime import date
 from django.db import connection
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
-from .forms import CustomerFilter, CATEGORY_CHOICES, CUSTOMER_COUNTRY_CHOICES
+from .forms import CustomerFilter, SendEmail,\
+     MARKETING_CATEGORY_CHOICES, CUSTOMER_COUNTRY_CHOICES
+from crm.models import Customer
 
 # VIEWS
 def marketing(request):
@@ -25,6 +27,52 @@ def marketing(request):
 
     return render(request, 'marketing/marketing.html', data)
 
+
+def send_email(request: HttpRequest, customer_string: str):
+    customer_list = customer_string.split('_')
+    status = None
+
+    if request.method == 'POST':
+        send_email_form = SendEmail(data=request.POST)
+        if send_email_form.is_valid():
+            send_email_form.cleaned_data
+            subject = send_email_form.data['subject']
+            body = send_email_form.data['body']
+            to = send_email_form.data['to'].split(', ')
+            to = [x for x in to]
+            cc = send_email_form.data['cc']
+            bcc = send_email_form.data['bcc']
+
+            from django.core.mail import EmailMessage
+            from django.conf import settings
+
+            email = EmailMessage(
+                subject=subject,
+                body=body,
+                from_email=settings.EMAIL_HOST_USER,
+                to=to,
+                cc=cc,
+                bcc=bcc,
+            )
+
+            # email.send()
+            status = 'success'
+        else:
+            status = 'error'
+    else:
+        temp = Customer.objects.filter(custid__in=customer_list).values_list('email')
+        customer_email = ''
+        for email in temp:
+            customer_email += email[0] + ', '
+        customer_email = customer_email[0:-2]
+        send_email_form = SendEmail(initial={'to': customer_email})
+
+    # data
+    data = {
+        'send_email_form': send_email_form,
+        'status': status,
+    }
+    return render(request, 'marketing/send_email.html', data)
 
 # AJAX
 def ChangeCustomerFilter(request: HttpRequest):

@@ -100,6 +100,7 @@ class Customer(models.Model):
     country = models.CharField(max_length=15, blank=True, null=True)
     phone = models.CharField(max_length=24, blank=True, null=True)
     fax = models.CharField(max_length=24, blank=True, null=True)
+    email = models.CharField(max_length=40, blank=True, null=True)
 
     class Meta:
         managed = False

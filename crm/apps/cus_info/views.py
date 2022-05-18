@@ -1,12 +1,65 @@
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.db import connection
 from crm.models import Orderdetail, Salesorder, Customer, Category
 import decimal
-from datetime import datetime
-from .forms import AddOrderDetailForm, DeleteOrderDetailForm
+import json
+from .forms import AddOrderDetailForm, DeleteOrderDetailForm, EditOrderDetailForm,\
+    PRODUCT_PRICE_CHOICES
 
-# Create your views here.
+# VIEWS
+def customer_order(request: HttpRequest, custid: int, orderid: int):
+    status = None
+    # form
+    edit_order_detail_form = EditOrderDetailForm(initial={'orderid': orderid, 'qty': 0, 'discount': 0})
+
+    # data
+    product_price = json.dumps(PRODUCT_PRICE_CHOICES)
+    order_detail_cols = [a.name for a in Orderdetail._meta.fields]
+    order_detail_cols.remove('id')
+    order_detail_cols.remove('orderid')
+
+    order_detail_list = Orderdetail.objects.filter(orderid=orderid)
+
+    data = {
+        'status': status,
+        # form
+        'edit_order_detail_form': edit_order_detail_form,
+        # data
+        'orderid': orderid,
+        'product_price': product_price,
+        'order_detail_list': order_detail_list,
+        'order_detail_cols': order_detail_cols,
+    }
+    return render(request, 'cus_info/cus_order.html', data)
+
+# AJAX
+def ChangeOrderDetail(request: HttpRequest, custid: int, orderid: int):
+    if is_ajax(request=request) and request.method == 'POST':
+        request_data = None
+        for x in request.POST:
+            request_data = x
+        request_data = json.loads(request_data)
+        row_data = request_data['row_data']
+        for row in row_data:
+            productid = int(row[0])
+            unitprice = decimal.Decimal(row[1])
+            quantity = int(row[2])
+            discount = decimal.Decimal(row[3])
+            new_order_detail = Orderdetail(orderid=orderid,\
+                productid=productid, unitprice=unitprice, qty=quantity,\
+                discount=discount)
+            print(orderid)
+            new_order_detail.save()
+        data = {
+            'success': 'success',
+        }
+
+        return JsonResponse(data, status=200)
+        # else:
+        #     return JsonResponse({'error': 'error'}, status=400)
+
+
 def customer_infomation(request: HttpRequest, custid: int):
     # cus infomation
     cus = Customer.objects.get(custid=custid)
@@ -14,10 +67,6 @@ def customer_infomation(request: HttpRequest, custid: int):
     # LOAD SALE ORDER
     # sale order and order detail
     order_cols = [a.name for a in Salesorder._meta.fields]
-    # order_cols.remove('custid')
-    # order_cols.remove('shipregion')
-    # order_cols.remove('shipperid')
-    # order_cols.remove('shippostalcode')
     # I use raw quaery to get order_detail, so this cols must be
     order_detail_cols = ['productid', 'productname', 'unitprice', 'qty', 'discount', 'amount']
     # get all sale order
@@ -254,8 +303,7 @@ def customer_infomation(request: HttpRequest, custid: int):
                   data)
 
 
-
-
+# ADDITION FUNC
 def dictfetchall(cursor): 
     "Returns all rows from a cursor as a dict"
     desc = cursor.description 
@@ -263,3 +311,6 @@ def dictfetchall(cursor):
             dict(zip([col[0] for col in desc], row)) 
             for row in cursor.fetchall() 
     ]
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'

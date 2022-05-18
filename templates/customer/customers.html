@@ -125,8 +125,8 @@
         <div class="modal-body">
           <form action="" method="post">
             {% for field in cus_form %}
-            <div class="input-box">
-              <span>{{ field.label }}</span>
+            <div class="form-group">
+              <label for="{{ field.label }}">{{ field.label }}</label>
               {{ field }}
             </div>
             {% endfor %}
@@ -158,8 +158,8 @@
               <!-- custid col: update table -->
               <input type="hidden" id="id_custid" name="custid">
               {% for field in cus_form %}
-              <div class="input-box">
-                <span>{{ field.label }}</span>
+              <div class="form-group">
+                <label for="{{ field.label }}">{{ field.label }}</label>
                 {{ field }}
               </div>
               {% endfor %}

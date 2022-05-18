@@ -1,0 +1,45 @@
+{% extends "marketing/header.html" %}
+{% load get_attribute %}
+{% load get_item %}
+{% load get_max %}
+{% load zip_lists %}
+{% load arithmetic_operators %}
+{% load get_index %}
+
+{% block title %}Send Email{% endblock %}
+
+{% block content1 %}
+<div class="content">
+
+  <div class="card">
+    <div class="card-header">
+      Send Email
+    </div>
+    <!-- status-->
+    {% if status == 'success' %}
+    <div class="alert alert-success" role="alert" style="margin: 40px 65px 10px 65px;">
+      Send Email Success!
+    </div>
+    {% elif status == 'error' %}
+    <div class="alert alert-danger" role="alert" style="margin: 40px 65px 10px 65px;">
+      Send Email Error!!!
+    </div>
+    {% endif %}
+
+    <div class="card-body">
+      <form action="" method="post" style="padding: 10px 50px">
+        {% for field in send_email_form %}
+        <div class="form-group">
+          <label for="{{ field.label }}">{{ field.label }}</label>
+          {{ field }}
+        </div>
+        {% endfor %}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px">Submit</button>
+      </form>
+    </div>
+  </div>
+
+
+</div>
+{% endblock %}

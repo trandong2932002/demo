@@ -1,15 +1,4 @@
 $(document).ready(function () {
-  // $("table_order tbody tr").click(function () {
-  //   row_data = $(this)[0].innerText.split("\t")
-  //   // add
-  //   // edit
-  //   console.log('asd')
-  //   $(".edit-form div input").each(function (index) {
-  //     $(".edit-form #" + $(this).attr("id")).attr("value", row_data[index])
-  //   });
-  //   // delete button
-  //   $(".delete-form #id_delete_id").attr("value", row_data[0])
-  // });
 
   // add form
   $(".manager .manager-button").find("[data-bs-target=\"#add_order\"]").click(function () {
