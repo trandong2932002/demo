@@ -13,7 +13,7 @@
   <h2 style="all: revert">Employee manager for Customer: id = {{ cus.0 }}, name = {{ cus.1 }}</h2>
 
   <!-- table layout -->
-  <div class="table">
+  <div class="">
     <!-- pager -->
     <div class="pager">
       <span class="pagedisplay"></span>
@@ -78,7 +78,7 @@
         {{ cusemp_form.as_p }}
         {% csrf_token %}
         <div class="input-box" id="submit-form">
-          <input type="submit" name="save" value="Save">
+          <input type="submit" name="save" value="Save" class="btn btn-primary">
         </div>
       </form>
       <div class="clearfix"></div>
