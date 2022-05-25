@@ -43,11 +43,20 @@ $(document).ready(function () {
     });
     $(".edit-form #order_id").val(row_data[0])
 
-
+    // edit button to open edit order detail
+    if (!(date_arr[0] < date_arr[2])) {
+      $("#Orderdetail_" + row_data[0] + " #edit_order_detail").attr("onclick", "window.open('/customerinformation/" + row_data[1] + "/" + row_data[0] + "','_blank')")
+    }
 
     // delete
     $(".delete-form #id_delete_id").val(row_data[0])
   });
+
+  $("#goto_customer_employee").click(function() {
+    var custid = window.location.href.split('/')[4]
+    $(this).attr("onclick", "window.open('/customeremployee/" + custid + "','_blank')")
+    
+  })
 
   // PARSE FUNC
   function parseDateFromString(date) {
