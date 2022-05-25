@@ -21,6 +21,7 @@
         <p><b>Address: </b> {{ cus.address }}</p>
         <p><b>Country: </b> {{ cus.country }}</p>
         <p><b>Phone: </b> {{ cus.phone }}</p>
+        <button type="button" class="btn btn-primary" formtarget="_blank" id="goto_customer_employee">Goto Customer Employee</button>
       </div>
 
       <!-- Chart1 -->
@@ -433,7 +434,7 @@
       <div class="modal-body">
         <!-- body here -->
         <p>Customer: {{ cus.contactname }}</p>
-        <p>Order id: {{ order_detail|get_item:'orderid' }}</p>
+        <p id="modal_order_id">Order id: {{ order_detail|get_item:'orderid' }}</p>
         <table>
           <thead>
             <tr>

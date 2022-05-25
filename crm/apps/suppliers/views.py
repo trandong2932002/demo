@@ -28,7 +28,7 @@ def supplier(request: HttpRequest):
         if 'add' in request.POST:
             print(request.POST)
             if supplier_form.is_valid():
-                # cus_form.cleaned_data
+                supplier_form.cleaned_data
                 new_supplier = supplier_form.save(commit=True)
                 return redirect('/suppliers/')
         if 'edit' in request.POST:

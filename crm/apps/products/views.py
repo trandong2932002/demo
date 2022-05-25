@@ -8,7 +8,7 @@ from .forms import ProductAddForm, ProductDeleteForm
 def products(request: HttpRequest):
     # Product table
     pro_cols = [a.name for a in Product._meta.fields]
-    pro_cols = [pro_cols[0], pro_cols[1], pro_cols[2], pro_cols[4],pro_cols[5], pro_cols[9]]
+    # pro_cols = [pro_cols[0], pro_cols[1], pro_cols[2], pro_cols[4],pro_cols[5], pro_cols[9]]
     products = Product.objects.all()
 
     # add product form
@@ -26,12 +26,12 @@ def products(request: HttpRequest):
                 return redirect('/products/')
 
         product_form = ProductAddForm(data=request.POST)
-        if('add' in request.POST):
+        if 'add' in request.POST:
             if product_form.is_valid():
                 new_pro = product_form.save(commit=True)
                 return redirect('/products/')
             
-        if('edit' in request.POST):
+        if 'edit' in request.POST:
             print(request.POST)
             if product_form.is_valid():
                 prodid = request.POST['productid']
